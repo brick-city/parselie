@@ -14,6 +14,7 @@
     "@babel/eslint-parser": "^7.16.3",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/plugin-proposal-private-methods": "^7.16.0",
+    "@types/moo": "^0.5.9",
     "@types/node": "^18.11.18",
     "@typescript-eslint/parser": "^5.48.2",
     "eslint": "^8.2.0",
@@ -22,5 +23,9 @@
     "eslint-plugin-import": "^2.25.3",
     "typescript": "^4.9.4"
   },
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "dependencies": {
+    "@brick-city/utils": "^0.7.2",
+    "chevrotain": "^11.0.3"
+  }
 }
