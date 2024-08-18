@@ -1,20 +1,7 @@
-import { createToken, Lexer } from 'chevrotain';
+import { createToken } from 'chevrotain';
 import { asciiCaseInsensitiveRegex } from '@brick-city/utils';
 
-const AggregateType = createToken({
-    name: 'AggregateType',
-    pattern: Lexer.NA,
-});
-
-const BooleanType = createToken({
-    name: 'BooleanType',
-    pattern: Lexer.NA,
-});
-
-const StringType = createToken({
-    name: 'StringType',
-    pattern: Lexer.NA,
-});
+import { AggregateType, BooleanType, StringType } from './token-categories.js';
 
 /**
  * @typedef {Object} KeywordObject
@@ -248,14 +235,7 @@ const keywords = [
         name: 'COALESCE',
         categories: [],
     },
-    {
-        name: 'TRUE',
-        categories: [BooleanType],
-    },
-    {
-        name: 'FALSE',
-        categories: [BooleanType],
-    },
+
 ];
 
 /** @type {chevrotain.TokenType[]} * */
