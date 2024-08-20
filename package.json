@@ -26,6 +26,7 @@
   "types": "./types/index.d.ts",
   "dependencies": {
     "@brick-city/utils": "^0.7.2",
-    "chevrotain": "^11.0.3"
+    "chevrotain": "^11.0.3",
+    "decimal.js": "^10.4.3"
   }
 }

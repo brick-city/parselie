@@ -1,7 +1,8 @@
 import { createToken } from 'chevrotain';
-import { asciiCaseInsensitiveRegex } from '@brick-city/utils';
 
-import { AggregateType, BooleanType, StringType } from './token-categories.js';
+import {
+    AggregateType, BooleanType, StringType, NumericType,
+} from './token-categories.js';
 
 /**
  * @typedef {Object} KeywordObject
@@ -13,73 +14,89 @@ import { AggregateType, BooleanType, StringType } from './token-categories.js';
  * @type {KeywordObject[]}
  */
 
-const keywords = [
+const keywordList = [
     // Aggregate functions
     {
         name: 'SUM',
-        categories: [AggregateType],
+        categories: [NumericType],
+    },
+    {
+        name: 'SUM_AGG',
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'AVERAGE',
-        categories: [AggregateType],
+        categories: [NumericType],
+    },
+    {
+        name: 'AVERAGE_AGG',
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'MAX',
-        categories: [AggregateType],
+        categories: [NumericType],
+    },
+    {
+        name: 'MAX_AGG',
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'MIN',
-        categories: [AggregateType],
+        categories: [NumericType],
+    },
+    {
+        name: 'MIN_AGG',
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'COUNT',
-        categories: [AggregateType],
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'COUNTIF',
-        categories: [AggregateType],
+        categories: [NumericType, AggregateType],
     },
     {
         name: 'SUMIF',
-        categories: [AggregateType],
+        categories: [NumericType, AggregateType],
     },
 
     // Numerical functions
     {
         name: 'MOD',
-        categories: [AggregateType],
+        categories: [NumericType],
     },
     {
         name: 'POWER',
-        categories: [AggregateType],
+        categories: [NumericType],
     },
     {
         name: 'EXP',
-        categories: [AggregateType],
+        categories: [NumericType],
     },
     {
         name: 'ROUND',
-        categories: [AggregateType],
+        categories: [NumericType],
     },
     {
         name: 'CEILING',
-        categories: [AggregateType],
+        categories: [NumericType],
     },
     {
         name: 'FLOOR',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'ABS',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'SQRT',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'PRODUCT',
-        categories: [],
+        categories: [NumericType],
     },
 
     // Date functions
@@ -93,11 +110,11 @@ const keywords = [
     },
     {
         name: 'MONTH',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'YEAR',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'NOW',
@@ -109,15 +126,15 @@ const keywords = [
     },
     {
         name: 'HOUR',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'MINUTE',
-        categories: [],
+        categories: [NumericType],
     },
     {
         name: 'SECOND',
-        categories: [],
+        categories: [NumericType],
     },
 
     // String functions
@@ -127,7 +144,7 @@ const keywords = [
     },
     {
         name: 'LEN',
-        categories: [StringType],
+        categories: [NumericType],
     },
     {
         name: 'LEFT',
@@ -240,15 +257,19 @@ const keywords = [
 
 /** @type {chevrotain.TokenType[]} * */
 // eslint-disable-next-line import/prefer-default-export
-export const keywordLex = [];
+export const keywords = [];
 
-keywords.sort((a, b) => a.name.length - b.name.length);
+keywordList.sort((a, b) => b.name.length - a.name.length);
 
-keywords.forEach((keyword) => {
+console.dir(keywordList, { depth: null });
 
-    keywordLex.push(createToken({
+keywordList.forEach((keyword) => {
+
+    const camelCase = keyword.name.toLowerCase().replace(/_./g, (match) => match[1].toUpperCase());
+
+    keywords.push(createToken({
         name: keyword.name.toUpperCase(),
-        pattern: asciiCaseInsensitiveRegex(keyword.name),
+        pattern: new RegExp(`${keyword.name.toUpperCase()}|${camelCase}`),
         categories: keyword.categories,
     }));
 

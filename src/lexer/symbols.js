@@ -74,12 +74,10 @@ export const symbols = [
     createToken({
         name: 'OpenCurly',
         pattern: /{/,
+        push_mode: 'curlyExpression',
     }),
 
-    createToken({
-        name: 'CloseCurly',
-        pattern: /}/,
-    }),
+    // Close Curly is defined in lexer, because it pops out of the mode, and we don't want to pop unless we are in a curly expression
 
     createToken({
         name: 'OpenBracket',
@@ -104,6 +102,11 @@ export const symbols = [
     createToken({
         name: 'Ampersand',
         pattern: /&/,
+    }),
+
+    createToken({
+        name: 'Dot',
+        pattern: /\./,
     }),
 
 ];
