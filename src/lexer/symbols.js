@@ -1,112 +1,134 @@
 import { createToken } from 'chevrotain';
 
-import { Multiplication, Addition, Power } from './token-categories.js';
+import { MultiplicationOperator, AdditionOperator, PowerOperator } from './token-categories.js';
 
-// eslint-disable-next-line import/prefer-default-export
-export const symbols = [
+export const Comma = createToken({
+    name: 'Comma',
+    pattern: /,/,
+});
 
-    createToken({
-        name: 'Comma',
-        pattern: /,/,
-    }),
+export const OpenParen = createToken({
+    name: 'OpenParen',
+    pattern: /\(/,
+});
 
-    createToken({
-        name: 'OpenParen',
-        pattern: /\(/,
-    }),
+export const CloseParen = createToken({
+    name: 'CloseParen',
+    pattern: /\)/,
+});
 
-    createToken({
-        name: 'CloseParen',
-        pattern: /\)/,
-    }),
+export const Plus = createToken({
+    name: 'Plus',
+    pattern: /\+/,
+    categories: [AdditionOperator],
+});
 
-    createToken({
-        name: 'Plus',
-        pattern: /\+/,
-        categories: [Addition],
-    }),
+export const Minus = createToken({
+    name: 'Minus',
+    pattern: /-/,
+    categories: [AdditionOperator],
+});
 
-    createToken({
-        name: 'Minus',
-        pattern: /-/,
-        categories: [Addition],
-    }),
+export const Caret = createToken({
+    name: 'Caret',
+    pattern: /\^/,
+    categories: [PowerOperator],
+});
 
-    createToken({
-        name: 'Caret',
-        pattern: /\^/,
-        categories: [Power],
-    }),
+export const Star = createToken({
+    name: 'Star',
+    pattern: /\*/i,
+    categories: [MultiplicationOperator],
+});
 
-    createToken({
-        name: 'Star',
-        pattern: /\*/i,
-        categories: [Multiplication],
-    }),
+export const Backslash = createToken({
+    name: 'Backslash',
+    pattern: /\\/i,
+    categories: [MultiplicationOperator],
+});
 
-    createToken({
-        name: 'Backslash',
-        pattern: /\\/i,
-        categories: [Multiplication],
-    }),
+export const Modulo = createToken({
+    name: 'Modulo',
+    pattern: /%/,
+    categories: [MultiplicationOperator],
+});
 
-    createToken({
-        name: 'Modulo',
-        pattern: /%/,
-        categories: [Multiplication],
-    }),
+export const Colon = createToken({
+    name: 'Colon',
+    pattern: /:/,
+});
 
-    createToken({
-        name: 'Colon',
-        pattern: /:/,
-    }),
+export const SemiColon = createToken({
+    name: 'SemiColon',
+    pattern: /;/,
+});
 
-    createToken({
-        name: 'SemiColon',
-        pattern: /;/,
-    }),
+export const Equal = createToken({
+    name: 'Equal',
+    pattern: /=/,
+});
 
-    createToken({
-        name: 'Equal',
-        pattern: /=/,
-    }),
+export const OpenCurly = createToken({
+    name: 'OpenCurly',
+    pattern: /{/,
+    push_mode: 'curlyExpression',
+});
 
-    createToken({
-        name: 'OpenCurly',
-        pattern: /{/,
-        push_mode: 'curlyExpression',
-    }),
+export const CloseCurly = createToken({
+    name: 'CloseCurly',
+    pattern: /}/,
+    pop_mode: true,
+});
 
-    // Close Curly is defined in lexer, because it pops out of the mode, and we don't want to pop unless we are in a curly expression
+export const OpenBracket = createToken({
+    name: 'OpenBracket',
+    pattern: /\[/,
+});
 
-    createToken({
-        name: 'OpenBracket',
-        pattern: /\[/,
-    }),
+export const CloseBracket = createToken({
+    name: 'CloseBracket',
+    pattern: /\]/,
+});
 
-    createToken({
-        name: 'CloseBracket',
-        pattern: /\]/,
-    }),
+export const QuestionMark = createToken({
+    name: 'QuestionMark',
+    pattern: /\?/,
+});
 
-    createToken({
-        name: 'QuestionMark',
-        pattern: /\?/,
-    }),
+export const VerticalBar = createToken({
+    name: 'VerticalBar',
+    pattern: /\|/,
+});
 
-    createToken({
-        name: 'VerticalBar',
-        pattern: /\|/,
-    }),
+export const Ampersand = createToken({
+    name: 'Ampersand',
+    pattern: /&/,
+});
 
-    createToken({
-        name: 'Ampersand',
-        pattern: /&/,
-    }),
+export const Dot = createToken({
+    name: 'Dot',
+    pattern: /\./,
+});
 
-    createToken({
-        name: 'Dot',
-        pattern: /\./,
-    }),
-
+export const symbolTokens = [
+    Comma,
+    OpenParen,
+    CloseParen,
+    Plus,
+    Minus,
+    Caret,
+    Star,
+    Backslash,
+    Modulo,
+    Colon,
+    SemiColon,
+    Equal,
+    OpenCurly,
+    // CloseCurly is applied separately in the lexer, because it pops out of the mode, and we don't want to pop unless we are in a curly expression
+    OpenBracket,
+    CloseBracket,
+    QuestionMark,
+    VerticalBar,
+    Ampersand,
+    Dot,
 ];

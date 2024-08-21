@@ -1,8 +1,9 @@
 import { createToken, Lexer } from 'chevrotain';
 import { Decimal } from 'decimal.js';
-import { keywords } from './keywords.js';
-import { symbols } from './symbols.js';
-import { literals } from './literal.js';
+import { keywordTokens } from './keywords.js';
+import { symbolTokens, CloseCurly } from './symbols.js';
+import { literalTokens } from './literal.js';
+import { categoryTokens, NumericLiteral } from './token-categories.js';
 
 const whiteSpace = createToken({
     name: 'whiteSpace',
@@ -22,12 +23,6 @@ const exitExpression = createToken({
     pop_mode: true,
 });
 
-const exitCurlyExpression = createToken({
-    name: 'CloseCurly',
-    pattern: /}/,
-    pop_mode: true,
-});
-
 const mainStringExpression = createToken({
     name: 'MAIN_STRING_EXPRESSION',
     // eslint-disable-next-line no-control-regex
@@ -44,18 +39,18 @@ const lexerDef = {
 
         expression: [
             whiteSpace,
-            ...keywords,
-            ...literals,
+            ...keywordTokens,
+            ...literalTokens,
             exitExpression,
-            ...symbols,
+            ...symbolTokens,
         ],
 
         curlyExpression: [
             whiteSpace,
-            ...keywords,
-            ...literals,
-            exitCurlyExpression,
-            ...symbols,
+            ...keywordTokens,
+            ...literalTokens,
+            CloseCurly,
+            ...symbolTokens,
         ],
 
     },
@@ -72,11 +67,25 @@ const lexer = new Lexer(lexerDef, { ensureOptimizations: true });
  * @returns {import('chevrotain').ILexingResult}
  */
 // eslint-disable-next-line import/prefer-default-export
-export function lex(inputText) {
+export function lex(inputText, mode = 'main') {
 
-    const lexingResult = lexer.tokenize(inputText);
+    const lexingResult = lexer.tokenize(inputText, mode);
 
-    lexingResult.groups?.NumberLiteral.forEach((token) => {
+    lexingResult.tokens.forEach((token) => {
+
+        if (token.tokenType?.CATEGORIES) {
+
+            token.tokenType.CATEGORIES.forEach((category) => {
+
+                category.tokenMatches.push(token);
+
+            });
+
+        }
+
+    });
+
+    NumericLiteral?.tokenMatches?.forEach((token) => {
 
         const value = token.image.replace(/_/g, '').replace(/[LlNn]$/, '');
 
@@ -94,10 +103,11 @@ export const allTokens = [
     whiteSpace,
     enterExpression,
     mainStringExpression,
-    ...keywords,
-    ...literals,
-    exitCurlyExpression,
+    ...keywordTokens,
+    ...literalTokens,
+    CloseCurly,
     exitExpression,
-    ...symbols,
+    ...symbolTokens,
+    ...categoryTokens,
 
 ];

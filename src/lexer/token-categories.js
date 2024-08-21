@@ -1,41 +1,49 @@
 import { createToken, Lexer } from 'chevrotain';
 
-export const AggregateType = createToken({
-    name: 'AggregateType',
-    pattern: Lexer.NA,
-});
+/**
+ *
+ * @param {string} name
+ * @returns {chevrotain.TokenType}
+ */
+function createTokenCategory(name) {
 
-export const BooleanType = createToken({
-    name: 'BooleanType',
-    pattern: Lexer.NA,
-});
+    const categoryToken = createToken({
+        name,
+        pattern: Lexer.NA,
+    });
 
-export const StringType = createToken({
-    name: 'StringType',
-    pattern: Lexer.NA,
-});
+    categoryToken.tokenMatches = [];
 
-export const NumericType = createToken({
-    name: 'NumericType',
-    pattern: Lexer.NA,
-});
+    return categoryToken;
 
-export const BooleanLiteral = createToken({
-    name: 'BooleanLiteral',
-    pattern: Lexer.NA,
-});
+}
 
-export const Addition = createToken({
-    name: 'Addition',
-    pattern: Lexer.NA,
-});
+export const AggregateType = createTokenCategory('AggregateType');
+export const BooleanType = createTokenCategory('BooleanType');
+export const StringType = createTokenCategory('StringType');
+export const NumericFunction = createTokenCategory('NumericFunction');
+export const NumericType = createTokenCategory('NumericType');
+export const NumericLiteral = createTokenCategory('NumericLiteral');
+export const BooleanLiteral = createTokenCategory('BooleanLiteral');
+export const StringLiteral = createTokenCategory('StringLiteral');
+export const Identifier = createTokenCategory('Identifier');
+export const DateLiteral = createTokenCategory('DateLiteral');
+export const AdditionOperator = createTokenCategory('AdditionOperator');
+export const MultiplicationOperator = createTokenCategory('MultiplicationOperator');
+export const PowerOperator = createTokenCategory('PowerOperator');
 
-export const Multiplication = createToken({
-    name: 'Multiplication',
-    pattern: Lexer.NA,
-});
-
-export const Power = createToken({
-    name: 'Power',
-    pattern: Lexer.NA,
-});
+export const categoryTokens = [
+    AggregateType,
+    BooleanType,
+    StringType,
+    NumericFunction,
+    NumericType,
+    NumericLiteral,
+    BooleanLiteral,
+    StringLiteral,
+    Identifier,
+    DateLiteral,
+    AdditionOperator,
+    MultiplicationOperator,
+    PowerOperator,
+];
