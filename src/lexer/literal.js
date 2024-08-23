@@ -1,108 +1,100 @@
 import { createToken } from 'chevrotain';
-import { NumericLiteral, StringLiteral, Identifier } from './token-categories.js';
+import {
+    NumericLiteral, StringLiteral, Identifier, BracketedIdentifier,
+} from './token-categories.js';
 
-// Literals
-// eslint-disable-next-line import/prefer-default-export
-export const BigBinaryLiteral = createToken({
-    name: 'BigBinaryLiteral',
-    pattern: /0b[01](_?[01])*[LlNn]/,
+/** @type {chevrotain.TokenType[]} */
+export const literalTokens = [];
+
+/**
+ * @param {Object} options
+ * @param {string} options.name
+ * @param {RegExp} options.pattern
+ * @param {chevrotain.TokenType[]} options.categories
+ * @param {string} [options.push_mode]
+ * @returns {chevrotain.TokenType}
+ */
+function createLiteralToken(options) {
+
+    const token = createToken(options);
+
+    literalTokens.push(token);
+
+    return token;
+
+}
+
+// This needs to be early so the integer doesn't match the float
+export const FloatLiteral = createLiteralToken({
+    name: 'FloatLiteral',
+    pattern: /[+-]?((\d+(_?\d)*)\.\d*(_?\d)*|\.\d+(_?\d)*|\d+(_?\d)*\.\d+(_?\d)*)(?:[eE][+-]?\d+(_?\d)*)?/,
     categories: [NumericLiteral],
 });
 
-export const BinaryLiteral = createToken({
+export const BinaryLiteral = createLiteralToken({
     name: 'BinaryLiteral',
-    pattern: /0b[01](_?[01])*/,
+    pattern: /0[bB][01](_?[01])*(\.[01](_?[01])*)?([pP][+-]?\d+)?/,
     categories: [NumericLiteral],
 });
 
-export const BigOctalLiteral = createToken({
-    name: 'BigOctalLiteral',
-    pattern: /0o[0-7](_?[0-7])*[LlNn]/,
-    categories: [NumericLiteral],
-});
-
-export const OctalLiteral = createToken({
+export const OctalLiteral = createLiteralToken({
     name: 'OctalLiteral',
-    pattern: /0o[0-7](_?[0-7])*/,
+    pattern: /0[oO][0-7](_?[0-7])*(\.[0-7](_?[0-7])*)?([pP][+-]?\d+)?/,
     categories: [NumericLiteral],
 });
 
-export const BigHexadecimalLiteral = createToken({
-    name: 'BigHexadecimalLiteral',
-    pattern: /0x[0-9a-fA-F](_?[0-9a-fA-F])*[LlNn]/,
+export const HexadecimalLiteral = createLiteralToken({
+    name: 'HexadecimalLiteral',
+    pattern: /0[xX][0-9a-fA-F](_?[0-9a-fA-F])*(\.[0-9a-fA-F](_?[0-9a-fA-F])*)?([pP][+-]?\d+)?/,
     categories: [NumericLiteral],
 });
 
-export const hexadecimalLiteral = createToken({
-    name: 'hexadecimalLiteral',
-    pattern: /0x[0-9a-fA-F](_?[0-9a-fA-F])*/,
+export const BigIntegerLiteral = createLiteralToken({
+    name: 'BigIntegerLiteral',
+    pattern: /(?:0|[1-9]\d*(_?\d)*)[LlNn]/,
     categories: [NumericLiteral],
 });
 
-// TODO: Still reviewing from here down:
-
-export const bigIntegerLiteral = createToken({
-    name: 'bigIntegerLiteral',
-    pattern: /(?:0|[1-9](?:\d_?)+)[LlNn]/,
+export const IntegerLiteral = createLiteralToken({
+    name: 'IntegerLiteral',
+    pattern: /(?:0|[1-9]\d*(_?\d)*)/,
     categories: [NumericLiteral],
 });
 
-export const integerLiteral = createToken({
-    name: 'integerLiteral',
-    pattern: /(?:0|[1-9](?:\d_?)+)/,
-    categories: [NumericLiteral],
-});
-
-export const floatLiteral = createToken({
-    name: 'floatLiteral',
-    pattern: /[+-]?([1-9]\d*\.\d*|\.\d+|\d\.\d+)(?:[eE][+-]?\d+)/,
-    categories: [NumericLiteral],
-});
-
-export const DoubleQuotedStringLiteral = createToken({
+export const DoubleQuotedStringLiteral = createLiteralToken({
     name: 'DoubleQuotedStringLiteral',
     pattern: /"(?:[^"\\]|\\.)*"/,
     categories: [StringLiteral],
 });
 
-export const SingleQuotedStringLiteral = createToken({
+export const SingleQuotedStringLiteral = createLiteralToken({
     name: 'SingleQuotedStringLiteral',
     pattern: /'(?:[^'\\]|\\.)*'/,
     categories: [StringLiteral],
 });
 
-export const IdentifierLiteral = createToken({
-    name: 'Identifier',
+export const IdentifierLiteral = createLiteralToken({
+    name: 'IdentifierLiteral',
     pattern: /[a-zA-Z_$][\w$]*/,
     categories: [Identifier],
 });
 
-export const BracketedIdentifierLiteral = createToken({
+export const BracketedIdentifierLiteral = createLiteralToken({
     // This looks for <! test !> type strings, allowing spaces but not control characters
     // also, not allowing the inner string to start or end with a space.
-    name: 'BracketedIdentifier',
+    name: 'BracketedIdentifierLiteral',
     pattern: /<![^\s<][^\t\n\r\f\v<]*[^\s<!]!>/,
-    categories: [Identifier],
+    categories: [Identifier, BracketedIdentifier],
 });
 
-export const GuidLiteral = createToken({
+export const GuidLiteral = createLiteralToken({
     name: 'GuidLiteral',
-    pattern: /\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}/,
+    pattern: /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/,
+    categories: [],
 });
 
-export const literalTokens = [
-    BigBinaryLiteral,
-    BinaryLiteral,
-    BigOctalLiteral,
-    OctalLiteral,
-    BigHexadecimalLiteral,
-    hexadecimalLiteral,
-    bigIntegerLiteral,
-    integerLiteral,
-    floatLiteral,
-    DoubleQuotedStringLiteral,
-    SingleQuotedStringLiteral,
-    IdentifierLiteral,
-    BracketedIdentifierLiteral,
-    GuidLiteral,
-];
+export const SQLGuidLiteral = createLiteralToken({
+    name: 'SQLGuidLiteral',
+    pattern: /\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}/,
+    categories: [],
+});

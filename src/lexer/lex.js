@@ -3,7 +3,7 @@ import { Decimal } from 'decimal.js';
 import { keywordTokens } from './keywords.js';
 import { symbolTokens, CloseCurly } from './symbols.js';
 import { literalTokens } from './literal.js';
-import { categoryTokens, NumericLiteral } from './token-categories.js';
+import { categoryTokens } from './token-categories.js';
 
 const whiteSpace = createToken({
     name: 'whiteSpace',
@@ -32,7 +32,7 @@ const mainStringExpression = createToken({
 const lexerDef = {
 
     modes: {
-        main: [
+        expressionString: [
             enterExpression,
             mainStringExpression,
         ],
@@ -55,7 +55,7 @@ const lexerDef = {
 
     },
 
-    defaultMode: 'main',
+    defaultMode: 'expressionString',
 
 };
 
@@ -64,12 +64,24 @@ const lexer = new Lexer(lexerDef, { ensureOptimizations: true });
 /**
  *
  * @param {String} inputText
- * @returns {import('chevrotain').ILexingResult}
+ * @returns {{
+ *   lexingResult: chevrotain.ILexingResult,
+ *   tokensForCategory: Object.<string, chevrotain.IToken[]>
+ * }}
  */
 // eslint-disable-next-line import/prefer-default-export
 export function lex(inputText, mode = 'main') {
 
     const lexingResult = lexer.tokenize(inputText, mode);
+
+    /** @type {Object.<string, chevrotain.IToken[]>}  */
+    const tokensForCategory = {};
+
+    categoryTokens.forEach((category) => {
+
+        tokensForCategory[category.name] = [];
+
+    });
 
     lexingResult.tokens.forEach((token) => {
 
@@ -77,7 +89,7 @@ export function lex(inputText, mode = 'main') {
 
             token.tokenType.CATEGORIES.forEach((category) => {
 
-                category.tokenMatches.push(token);
+                tokensForCategory[category.name].push(token);
 
             });
 
@@ -85,7 +97,7 @@ export function lex(inputText, mode = 'main') {
 
     });
 
-    NumericLiteral?.tokenMatches?.forEach((token) => {
+    tokensForCategory.NumericLiteral.forEach((token) => {
 
         const value = token.image.replace(/_/g, '').replace(/[LlNn]$/, '');
 
@@ -94,12 +106,21 @@ export function lex(inputText, mode = 'main') {
 
     });
 
-    return lexingResult;
+    tokensForCategory.Identifier.forEach((token) => {
+
+        // eslint-disable-next-line no-param-reassign
+        token.value = token.tokenType.name === 'IdentifierLiteral' ? token.image : token.image.slice(2, -2);
+
+    });
+
+    return {
+        lexingResult,
+        tokensForCategory,
+    };
 
 }
 
 export const allTokens = [
-
     whiteSpace,
     enterExpression,
     mainStringExpression,
@@ -109,5 +130,4 @@ export const allTokens = [
     exitExpression,
     ...symbolTokens,
     ...categoryTokens,
-
 ];

@@ -1,6 +1,8 @@
 import { createToken } from 'chevrotain';
 
-import { MultiplicationOperator, AdditionOperator, PowerOperator } from './token-categories.js';
+import {
+    MultiplicationOperator, AdditionOperator, PowerOperator, UnaryOperator,
+} from './token-categories.js';
 
 export const Comma = createToken({
     name: 'Comma',
@@ -20,13 +22,13 @@ export const CloseParen = createToken({
 export const Plus = createToken({
     name: 'Plus',
     pattern: /\+/,
-    categories: [AdditionOperator],
+    categories: [AdditionOperator, UnaryOperator],
 });
 
 export const Minus = createToken({
     name: 'Minus',
     pattern: /-/,
-    categories: [AdditionOperator],
+    categories: [AdditionOperator, UnaryOperator],
 });
 
 export const Caret = createToken({

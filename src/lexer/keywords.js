@@ -4,6 +4,8 @@ import {
     AggregateType, BooleanType, StringType, NumericFunction,
 } from './token-categories.js';
 
+import { IdentifierLiteral } from './literal.js';
+
 /**
  * @typedef {Object} KeywordObject
  * @property {string} name - The name of the keyword.
@@ -61,7 +63,7 @@ const keywordList = [
         categories: [NumericFunction, AggregateType],
     },
 
-    // Numerical functions
+    // Numeric functions
     {
         name: 'MOD',
         categories: [NumericFunction],
@@ -271,6 +273,7 @@ keywordList.forEach((keyword) => {
         name: keyword.name.toUpperCase(),
         pattern: new RegExp(`${keyword.name.toUpperCase()}|${camelCase}`),
         categories: keyword.categories,
+        longer_alt: IdentifierLiteral,
     }));
 
 });

@@ -12,7 +12,8 @@
         "noImplicitReturns": false,
         "esModuleInterop": true,
         "outDir": "./types",
+        "typeRoots": ["./src/typings", "./node_modules/@types"]
     },
-    "include": ["src/**/*.js", "*.js" ],
+    "include": ["src/**/*.js", "*.js", "src/typings/*.d.ts" ],
     "exclude": ["node_modules", "types", "src/**/test.js", "*.d.ts"]
 }
