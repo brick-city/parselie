@@ -36,3 +36,4 @@ export const AdditionOperator = createTokenCategory('AdditionOperator');
 export const MultiplicationOperator = createTokenCategory('MultiplicationOperator');
 export const PowerOperator = createTokenCategory('PowerOperator');
 export const UnaryOperator = createTokenCategory('UnaryOperator');
+export const BooleanUnaryOperator = createTokenCategory('BooleanUnaryOperator');

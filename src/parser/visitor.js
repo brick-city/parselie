@@ -204,9 +204,9 @@ export class ParslieVisitor extends BaseVisitor {
 
         return {
             returns: 'Numeric',
-            type: 'Unary',
-            operator: '-',
-            expression,
+            type: 'Function',
+            name: 'NEGATE',
+            args: [expression],
         };
 
     }
