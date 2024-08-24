@@ -37,3 +37,5 @@ export const MultiplicationOperator = createTokenCategory('MultiplicationOperato
 export const PowerOperator = createTokenCategory('PowerOperator');
 export const UnaryOperator = createTokenCategory('UnaryOperator');
 export const BooleanUnaryOperator = createTokenCategory('BooleanUnaryOperator');
+export const NumericEnumeration = createTokenCategory('NumericEnumeration');
+export const Enumeration = createTokenCategory('Enumeration');
