@@ -3,7 +3,12 @@
     {"mode": "auto"}
 ],
 "cSpell.words": [
+    "CHARINDEX",
+    "ISBLANK",
+    "ISLOGICAL",
+    "ltrim",
     "parselie",
-    "Parslie"
+    "Parslie",
+    "RTRIM"
 ]
 }
