@@ -7,9 +7,12 @@ import {
     NumericFunction,
     Identifier,
     UnaryOperator,
+    AggregateFunction,
+    StringFunction,
+    StringLiteral,
 } from '../lexer/token-categories.js';
 import {
-    OpenParen, CloseParen, Comma, Dot,
+    OpenParen, CloseParen, Comma, Dot, Ampersand,
 } from '../lexer/symbols.js';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -19,7 +22,25 @@ export class ParslieParser extends CstParser {
 
         this.OR([
 
+            { ALT: () => this.SUBRULE(this.scalarExpression) },
+            { ALT: () => this.SUBRULE(this.aggregateExpression) },
+
+        ]);
+
+    });
+
+    aggregateExpression = this.RULE('aggregateExpression', () => {
+
+        this.CONSUME(this.aggregateFunctionExpression);
+
+    });
+
+    scalarExpression = this.RULE('scalarExpression', () => {
+
+        this.OR([
+
             { ALT: () => this.SUBRULE(this.numericExpression) },
+            { ALT: () => this.SUBRULE(this.stringExpression) },
 
         ]);
 
@@ -28,6 +49,36 @@ export class ParslieParser extends CstParser {
     numericExpression = this.RULE('numericExpression', () => {
 
         this.SUBRULE(this.additionExpression);
+
+    });
+
+    stringExpression = this.RULE('stringExpression', () => {
+
+        this.SUBRULE(this.concatenationExpression);
+
+    });
+
+    concatenationExpression = this.RULE('concatenationExpression', () => {
+
+        this.SUBRULE(this.atomicStringExpression, { LABEL: 'lhs' });
+
+        this.MANY(() => {
+
+            this.CONSUME(Ampersand, { LABEL: 'operator' });
+            this.SUBRULE2(this.atomicStringExpression, { LABEL: 'rhs' });
+
+        });
+
+    });
+
+    atomicStringExpression = this.RULE('atomicStringExpression', () => {
+
+        this.OR([
+            { ALT: () => this.CONSUME(StringLiteral) },
+            { ALT: () => this.SUBRULE(this.identifierExpression) },
+            { ALT: () => this.SUBRULE(this.aggregateFunctionExpression) },
+            { ALT: () => this.SUBRULE(this.stringFunctionExpression) },
+        ]);
 
     });
 
@@ -76,6 +127,8 @@ export class ParslieParser extends CstParser {
             { ALT: () => this.SUBRULE(this.identifierExpression) },
             { ALT: () => this.SUBRULE(this.parenthesisExpression) },
             { ALT: () => this.SUBRULE(this.numericalFunctionExpression) },
+            { ALT: () => this.SUBRULE(this.aggregateFunctionExpression) },
+            { ALT: () => this.SUBRULE(this.stringFunctionExpression) },
             { ALT: () => this.SUBRULE(this.unaryExpression) },
         ]);
 
@@ -99,6 +152,30 @@ export class ParslieParser extends CstParser {
     numericalFunctionExpression = this.RULE('numericalFunctionExpression', () => {
 
         this.CONSUME(NumericFunction);
+        this.CONSUME(OpenParen);
+        this.MANY_SEP({
+            SEP: Comma,
+            DEF: () => this.SUBRULE(this.expression),
+        });
+        this.CONSUME(CloseParen);
+
+    });
+
+    aggregateFunctionExpression = this.RULE('aggregateFunctionExpression', () => {
+
+        this.CONSUME(AggregateFunction);
+        this.CONSUME(OpenParen);
+        this.MANY_SEP({
+            SEP: Comma,
+            DEF: () => this.SUBRULE(this.scalarExpression),
+        });
+        this.CONSUME(CloseParen);
+
+    });
+
+    stringFunctionExpression = this.RULE('stringFunctionExpression', () => {
+
+        this.CONSUME(StringFunction);
         this.CONSUME(OpenParen);
         this.MANY_SEP({
             SEP: Comma,

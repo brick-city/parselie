@@ -1,15 +1,8 @@
+// eslint-disable-next-line import/prefer-default-export
 import { BooleanType } from '../token-categories.js';
 import * as Types from '../../types.d.js';
 
-/**@type {Types.KeywordObject[]} */
- * @typedef {Object} KeywordObject
- * @property {string} name - The name of the keyword.
- * @property {Array<chevrotain.TokenType>} categories - An array representing categories.
- * @property {string} [function] - The function that the keyword represents.
- * @property {"Enumeration"|"Function"} type - The type of the token.
- * @property {*} [value] - The value of the token.
- * @property {"Numeric"|"String"|"Boolean"} returns - The return type of the function.
- */
+/** @type {Types.KeywordObject[]} */
 
 // eslint-disable-next-line import/prefer-default-export
 export const logicalFunctionList = [
@@ -50,6 +43,20 @@ export const logicalFunctionList = [
     },
     {
         name: 'or',
+        categories: [BooleanType],
+        function: 'OR',
+        type: 'Function',
+        returns: 'Boolean',
+    },
+    {
+        name: 'XOR',
+        categories: [BooleanType],
+        function: 'OR',
+        type: 'Function',
+        returns: 'Boolean',
+    },
+    {
+        name: 'xor',
         categories: [BooleanType],
         function: 'OR',
         type: 'Function',
