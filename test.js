@@ -14,9 +14,9 @@ import { ParslieVisitor } from './src/parser/visitor.js';
 // console.log((t instanceof Decimal));
 // console.log(t.constructor.name);
 
-const { cst } = parselieParser('SUM(56, 15, 354, (3.5 + 10-99 - .01 + anidetifier), - identifierName.property1.property2.property3, + - + 5.3745)', 'expression');
+// const { cst } = parselieParser('SUM(56, 15, 354, (3.5 + 10-99 - .01 + anidetifier), - identifierName.property1.property2.property3, + - + 5.3745)', 'expression');
 
-// const { cst } = parselieParser('- 5.567', 'expression');
+const { cst } = parselieParser('- 5.567', 'expression');
 
 const parselieVisitor = new ParslieVisitor();
 

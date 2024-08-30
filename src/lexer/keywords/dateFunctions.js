@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-import { DateType } from '../token-categories.js';
+import { FunctionKeyWord } from '../token-categories.js';
 import * as Types from '../../types.d.js';
 
 /** @type {Types.KeywordObject[]} */
@@ -8,56 +8,56 @@ import * as Types from '../../types.d.js';
 export const dateFunctionList = [
     {
         name: 'GETUTCDATE',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'GETUTCDATE',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'getUTCDate',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'GETUTCDATE',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'GETDATE',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'GETDATE',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'getDate',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'GETDATE',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'NOW',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'NOW',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'now',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'NOW',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'TODAY',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'TODAY',
         type: 'Function',
         returns: 'Date',
     },
     {
         name: 'today',
-        categories: [DateType],
+        categories: [FunctionKeyWord],
         function: 'TODAY',
         type: 'Function',
         returns: 'Date',

@@ -27,6 +27,8 @@ export function parselieParser(inputText, mode) {
 
     const cst = parser.expression();
 
+    console.log(JSON.stringify(cst));
+
     console.log('parsed');
 
     return {

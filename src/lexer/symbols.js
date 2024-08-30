@@ -105,6 +105,7 @@ export const VerticalBar = createToken({
 export const Ampersand = createToken({
     name: 'Ampersand',
     pattern: /&/,
+    categories: [AdditionOperator],
 });
 
 export const Dot = createToken({

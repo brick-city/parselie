@@ -3,16 +3,14 @@ import { allTokens } from '../lexer/lex.js';
 import {
     AdditionOperator,
     MultiplicationOperator,
-    NumericLiteral,
-    NumericFunction,
+    Literal,
     Identifier,
     UnaryOperator,
-    AggregateFunction,
-    StringFunction,
-    StringLiteral,
+    FunctionKeyWord,
+
 } from '../lexer/token-categories.js';
 import {
-    OpenParen, CloseParen, Comma, Dot, Ampersand,
+    OpenParen, CloseParen, Comma, Dot, OpenBracket, CloseBracket,
 } from '../lexer/symbols.js';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -20,65 +18,7 @@ export class ParslieParser extends CstParser {
 
     expression = this.RULE('expression', () => {
 
-        this.OR([
-
-            { ALT: () => this.SUBRULE(this.scalarExpression) },
-            { ALT: () => this.SUBRULE(this.aggregateExpression) },
-
-        ]);
-
-    });
-
-    aggregateExpression = this.RULE('aggregateExpression', () => {
-
-        this.CONSUME(this.aggregateFunctionExpression);
-
-    });
-
-    scalarExpression = this.RULE('scalarExpression', () => {
-
-        this.OR([
-
-            { ALT: () => this.SUBRULE(this.numericExpression) },
-            { ALT: () => this.SUBRULE(this.stringExpression) },
-
-        ]);
-
-    });
-
-    numericExpression = this.RULE('numericExpression', () => {
-
         this.SUBRULE(this.additionExpression);
-
-    });
-
-    stringExpression = this.RULE('stringExpression', () => {
-
-        this.SUBRULE(this.concatenationExpression);
-
-    });
-
-    concatenationExpression = this.RULE('concatenationExpression', () => {
-
-        this.SUBRULE(this.atomicStringExpression, { LABEL: 'lhs' });
-
-        this.MANY(() => {
-
-            this.CONSUME(Ampersand, { LABEL: 'operator' });
-            this.SUBRULE2(this.atomicStringExpression, { LABEL: 'rhs' });
-
-        });
-
-    });
-
-    atomicStringExpression = this.RULE('atomicStringExpression', () => {
-
-        this.OR([
-            { ALT: () => this.CONSUME(StringLiteral) },
-            { ALT: () => this.SUBRULE(this.identifierExpression) },
-            { ALT: () => this.SUBRULE(this.aggregateFunctionExpression) },
-            { ALT: () => this.SUBRULE(this.stringFunctionExpression) },
-        ]);
 
     });
 
@@ -108,6 +48,18 @@ export class ParslieParser extends CstParser {
 
     });
 
+    atomicExpression = this.RULE('atomicExpression', () => {
+
+        this.OR([
+            { ALT: () => this.CONSUME(Literal) },
+            { ALT: () => this.SUBRULE(this.parenthesisExpression) },
+            { ALT: () => this.SUBRULE(this.functionExpression) },
+            { ALT: () => this.SUBRULE(this.unaryExpression) },
+            { ALT: () => this.SUBRULE(this.identifierExpression) },
+        ]);
+
+    });
+
     identifierExpression = this.RULE('identifierExpression', () => {
 
         this.CONSUME(Identifier, { LABEL: 'identifier' });
@@ -120,25 +72,19 @@ export class ParslieParser extends CstParser {
 
     });
 
-    atomicExpression = this.RULE('atomicExpression', () => {
-
-        this.OR([
-            { ALT: () => this.CONSUME(NumericLiteral) },
-            { ALT: () => this.SUBRULE(this.identifierExpression) },
-            { ALT: () => this.SUBRULE(this.parenthesisExpression) },
-            { ALT: () => this.SUBRULE(this.numericalFunctionExpression) },
-            { ALT: () => this.SUBRULE(this.aggregateFunctionExpression) },
-            { ALT: () => this.SUBRULE(this.stringFunctionExpression) },
-            { ALT: () => this.SUBRULE(this.unaryExpression) },
-        ]);
-
-    });
-
     parenthesisExpression = this.RULE('parenthesisExpression', () => {
 
         this.CONSUME(OpenParen);
         this.SUBRULE(this.expression);
         this.CONSUME(CloseParen);
+
+    });
+
+    arrayExpression = this.RULE('arrayExpression', () => {
+
+        this.CONSUME(OpenBracket);
+        this.SUBRULE(this.arguments);
+        this.CONSUME(CloseBracket);
 
     });
 
@@ -149,39 +95,23 @@ export class ParslieParser extends CstParser {
 
     });
 
-    numericalFunctionExpression = this.RULE('numericalFunctionExpression', () => {
+    functionExpression = this.RULE('functionExpression', () => {
 
-        this.CONSUME(NumericFunction);
+        console.log('functionExpression', this.LA(1).image);
+
+        this.CONSUME(FunctionKeyWord);
         this.CONSUME(OpenParen);
-        this.MANY_SEP({
-            SEP: Comma,
-            DEF: () => this.SUBRULE(this.expression),
-        });
+        this.SUBRULE(this.arguments);
         this.CONSUME(CloseParen);
 
     });
 
-    aggregateFunctionExpression = this.RULE('aggregateFunctionExpression', () => {
+    arguments = this.RULE('arguments', () => {
 
-        this.CONSUME(AggregateFunction);
-        this.CONSUME(OpenParen);
-        this.MANY_SEP({
-            SEP: Comma,
-            DEF: () => this.SUBRULE(this.scalarExpression),
-        });
-        this.CONSUME(CloseParen);
-
-    });
-
-    stringFunctionExpression = this.RULE('stringFunctionExpression', () => {
-
-        this.CONSUME(StringFunction);
-        this.CONSUME(OpenParen);
         this.MANY_SEP({
             SEP: Comma,
             DEF: () => this.SUBRULE(this.expression),
         });
-        this.CONSUME(CloseParen);
 
     });
 

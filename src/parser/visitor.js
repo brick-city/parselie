@@ -17,17 +17,13 @@ export class ParslieVisitor extends BaseVisitor {
 
     expression(ctx) {
 
-        return this.visit(ctx.numericExpression);
-
-    }
-
-    numericExpression(ctx) {
-
         return this.visit(ctx.additionExpression);
 
     }
 
     additionExpression(ctx) {
+
+        console.log('addition exp', ctx);
 
         const lhs = this.visit(ctx.lhs);
         const args = [];
@@ -36,19 +32,33 @@ export class ParslieVisitor extends BaseVisitor {
 
             args.push(lhs);
 
+            console.log('addition exp', ctx);
+
+            console.log('args add exp 1', args);
+
             ctx.operator.forEach((operator, i) => {
+
+                const rhExp = this.visit(ctx.rhs[i]) ?? {
+                    returns: undefined,
+                    type: 'undefined',
+                    value: undefined,
+                };
+
+                // TODO: If rhExp is undefined, throw an error or log an error, or something, no trailing operator allowed
 
                 if (operator.image === '+') {
 
-                    args.push(this.visit(ctx.rhs[i]));
+                    args.push(rhExp);
 
                 } else {
 
-                    args.push(this.negateExpression(this.visit(ctx.rhs[i])));
+                    args.push(this.negateExpression(rhExp));
 
                 }
 
             });
+
+            console.log('args add exp', args);
 
             const constants = [];
             for (let i = args.length - 1; i >= 0; i--) {
@@ -103,6 +113,8 @@ export class ParslieVisitor extends BaseVisitor {
 
     multiplicationExpression(ctx) {
 
+        console.log('multiplicationExpression', ctx);
+
         const lhs = this.visit(ctx.lhs);
 
         if (ctx.rhs) {
@@ -123,22 +135,18 @@ export class ParslieVisitor extends BaseVisitor {
 
     atomicExpression(ctx) {
 
-        //   console.log('atomicExpression');
-        //   console.dir(ctx, { depth: null });
+        console.log('atomicExpression');
+        console.dir(ctx, { depth: null });
 
-        if (ctx.NumericLiteral) {
+        if (ctx.Literal) {
+
+            // TODO: Add support for other types of literals
 
             return {
                 returns: 'Numeric',
                 type: 'Constant',
-                value: ctx.NumericLiteral[0].value,
+                value: ctx.Literal[0].value,
             };
-
-        }
-
-        if (ctx.identifierExpression) {
-
-            return this.visit(ctx.identifierExpression);
 
         }
 
@@ -173,8 +181,10 @@ export class ParslieVisitor extends BaseVisitor {
 
     unaryExpression(ctx) {
 
+        console.log('unaryExpression', ctx);
+
         const operator = ctx.UnaryOperator[0].image;
-        const expression = this.visit(ctx.expression);
+        const expression = this.visit(ctx.expression[0]);
 
         // Try to simplify the expression
 
@@ -191,6 +201,8 @@ export class ParslieVisitor extends BaseVisitor {
 
     // eslint-disable-next-line class-methods-use-this
     negateExpression(expression) {
+
+        console.log('negateExpression', expression);
 
         if (expression.type === 'Constant') {
 
@@ -217,16 +229,33 @@ export class ParslieVisitor extends BaseVisitor {
 
     }
 
-    numericalFunctionExpression(ctx) {
+    functionExpression(ctx) {
 
-        const args = ctx.expression.map((parm) => this.visit(parm));
+        // TODO: Add support the function type
+        // TODO: Add support for function parameter typing
+
+        const args = this.visit(ctx.arguments);
+
+        console.log(args);
 
         return {
             returns: 'Numeric',
             type: 'Function',
-            name: ctx.NumericFunction[0].image,
+            name: ctx.FunctionType[0].image,
             args,
         };
+
+    }
+
+    arguments(ctx) {
+
+        console.log('arguments', ctx);
+
+        const args = ctx.expression.map((exp) => this.visit(exp));
+
+        console.log('args', args);
+
+        return args;
 
     }
 

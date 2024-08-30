@@ -4,11 +4,13 @@
 ],
 "cSpell.words": [
     "CHARINDEX",
+    "COUNTIF",
     "ISBLANK",
     "ISLOGICAL",
     "ltrim",
     "parselie",
     "Parslie",
-    "RTRIM"
+    "RTRIM",
+    "SUMIF"
 ]
 }
