@@ -109,7 +109,7 @@ export function lex(inputText, mode = 'main') {
     tokensForCategory.Identifier.forEach((token) => {
 
         // eslint-disable-next-line no-param-reassign
-        token.value = token.tokenType.name === 'IdentifierLiteral' ? token.image : token.image.slice(2, -2);
+        token.value = token.tokenType.name === 'IdentifierLiteral' ? token.image : token.image.slice(2, -2); // Slice off the <! !>
 
     });
 

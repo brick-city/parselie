@@ -7,14 +7,14 @@ import * as Types from '../../types.d.js';
 // eslint-disable-next-line import/prefer-default-export
 export const logicalFunctionList = [
     {
-        name: 'IF',
+        name: 'IIF',
         categories: [FunctionKeyWord],
         function: 'IF',
         type: 'Function',
         returns: 'Boolean',
     },
     {
-        name: 'if',
+        name: 'iif',
         categories: [FunctionKeyWord],
         function: 'IF',
         type: 'Function',

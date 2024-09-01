@@ -11,7 +11,7 @@
  * @property {string} [function] - The function that the keyword represents.
  * @property {"Enumeration"|"Function"} type - The type of the token.
  * @property {*} [value] - The value of the token.
- * @property {"Numeric"|"String"|"Boolean"|"Date"} returns - The return type of the function.
+ * @property {"Numeric"|"String"|"Boolean"|"Date"|"Undefined"|"Null"} returns - The return type of the function.
  * @property {Array<chevrotain.TokenType>[]} [arguments] - The arguments of the function.
  */
 

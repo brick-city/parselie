@@ -5,44 +5,47 @@ import { stringFunctionList } from './keywords/stringFunctions.js';
 import { numericFunctionList } from './keywords/numericFunctions.js';
 import { aggregateFunctionList } from './keywords/aggregateFunctions.js';
 import { enumerationList } from './keywords/enumerations.js';
+import { literalKeywordList } from './keywords/literalKeywords.js';
 
 import { IdentifierLiteral } from './literal.js';
 
 import * as Types from '../types.d.js';
 
 /** @type {Types.KeywordObject[]} */
-const keywordList = [...enumerationList,
+const keywordList = [
+    ...literalKeywordList,
+    ...enumerationList,
     ...logicalFunctionList,
     ...stringFunctionList,
     ...dateFunctionList,
     ...numericFunctionList,
-    ...aggregateFunctionList];
-
-/** @type {chevrotain.TokenType[]} * */
-// eslint-disable-next-line import/prefer-default-export
-export const keywordTokens = [];
+    ...aggregateFunctionList,
+];
 
 keywordList.sort((a, b) => b.name.length - a.name.length);
 
-keywordList.forEach((keyword) => {
+/** @type {chevrotain.TokenType[]} */
+// eslint-disable-next-line import/prefer-default-export
+export const keywordTokens = keywordList.map((keyword) => {
 
-    if (keyword.name.startsWith('@')) {
+    /** @type {chevrotain.ITokenConfig} */
+    const tokenConfig = {
+        name: keyword.name,
+        pattern: new RegExp(keyword.name),
+        categories: keyword.categories,
+    };
 
-        keywordTokens.push(createToken({
-            name: keyword.name,
-            pattern: new RegExp(keyword.name),
-            categories: keyword.categories,
-        }));
+    if (!keyword.name.startsWith('@')) {
 
-    } else {
-
-        keywordTokens.push(createToken({
-            name: keyword.name,
-            pattern: new RegExp(keyword.name),
-            categories: keyword.categories,
-            longer_alt: IdentifierLiteral,
-        }));
+        tokenConfig.longer_alt = IdentifierLiteral;
 
     }
+
+    const keywordToken = createToken(tokenConfig);
+
+    if (keyword.value) keywordToken.value = keyword.value;
+    if (keyword.returns) keywordToken.returnType = keyword.returns;
+
+    return keywordToken;
 
 });

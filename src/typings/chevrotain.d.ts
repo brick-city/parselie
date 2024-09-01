@@ -6,4 +6,9 @@ declare module 'chevrotain' {
     value?: any;
   }
 
+  interface TokenType {
+    value?: any;
+    returnType?: any;
+  }
+
 }
