@@ -2,9 +2,15 @@
 import { FunctionKeyWord } from '../token-categories.js';
 import * as Types from '../../types.d.js';
 
-/** @type {Types.KeywordObject[]} */
+export const stringFunctionDefinitions = [
+    {
+        function: 'CONCATENATE',
+        returns: 'String',
+        arguments: [['String', 'StringVar']],
+    },
+];
 
-// eslint-disable-next-line import/prefer-default-export
+/** @type {Types.KeywordObject[]} */
 export const stringFunctionList = [
     {
         name: 'CONCATENATE',
@@ -12,6 +18,7 @@ export const stringFunctionList = [
         function: 'CONCATENATE',
         type: 'Function',
         returns: 'String',
+        arguments: [['String', 'StringVar']],
     },
     {
         name: 'concatenate',
@@ -26,6 +33,7 @@ export const stringFunctionList = [
         function: 'LEFT',
         type: 'Function',
         returns: 'String',
+        arguments: [['String', 'Numeric']],
     },
     {
         name: 'left',
@@ -201,5 +209,62 @@ export const stringFunctionList = [
         function: 'SUBSTITUTE',
         type: 'Function',
         returns: 'String',
+    },
+
+    {
+        name: 'CHARINDEX',
+        categories: [FunctionKeyWord],
+        function: 'CHARINDEX',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'charIndex',
+        categories: [FunctionKeyWord],
+        function: 'CHARINDEX',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'FIND',
+        categories: [FunctionKeyWord],
+        function: 'FIND',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'find',
+        categories: [FunctionKeyWord],
+        function: 'FIND',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'SEARCH',
+        categories: [FunctionKeyWord],
+        function: 'FIND',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'search',
+        categories: [FunctionKeyWord],
+        function: 'FIND',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'LEN',
+        categories: [FunctionKeyWord],
+        function: 'LEN',
+        type: 'Function',
+        returns: 'Numeric',
+    },
+    {
+        name: 'len',
+        categories: [FunctionKeyWord],
+        function: 'LEN',
+        type: 'Function',
+        returns: 'Numeric',
     },
 ];
