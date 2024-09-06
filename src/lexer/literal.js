@@ -23,15 +23,32 @@ function createLiteralToken(options) {
     return token;
 
 }
+
+/**
+ *
+ * @param {string} name
+ * @param {string} quoteChar
+ * @returns
+ */
+function createStringLiteralToken(name, quoteChar) {
+
+    return createLiteralToken({
+        name,
+        pattern: new RegExp(`${quoteChar}(?:[^${quoteChar}\\\\]|\\\\.)*${quoteChar}`),
+        categories: [StringLiteral, Literal],
+    });
+
+}
+
 // This needs to be early so the hex doesn't match the guid
-export const GuidLiteral = createLiteralToken({
+export const UuidLiteral = createLiteralToken({
     name: 'GuidLiteral',
     pattern: /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/,
     categories: [Literal],
 });
 
-export const SQLGuidLiteral = createLiteralToken({
-    name: 'SQLGuidLiteral',
+export const GuidLiteral = createLiteralToken({
+    name: 'GuidLiteral',
     pattern: /\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}/,
     categories: [Literal],
 });
@@ -39,7 +56,7 @@ export const SQLGuidLiteral = createLiteralToken({
 // This needs to be early so the integer doesn't match the float
 export const FloatLiteral = createLiteralToken({
     name: 'FloatLiteral',
-    pattern: /[+-]?((\d+(_?\d)*)\.\d*(_?\d)*|\.\d+(_?\d)*|\d+(_?\d)*\.\d+(_?\d)*)(?:[eE][+-]?\d+(_?\d)*)?/,
+    pattern: /[+-]?(?:\d+(_?\d+)*|\d*(_?\d+)?\.\d+(_?\d+)*|\d+(_?\d+)*\.\d*)([eE][+-]?\d+(_?\d+)*)?/,
     categories: [NumericLiteral, Literal],
 });
 
@@ -73,28 +90,14 @@ export const IntegerLiteral = createLiteralToken({
     categories: [NumericLiteral, Literal],
 });
 
-export const DoubleQuotedStringLiteral = createLiteralToken({
-    name: 'DoubleQuotedStringLiteral',
-    pattern: /"(?:[^"\\]|\\.)*"/,
-    categories: [StringLiteral, Literal],
-});
-
-export const SingleQuotedStringLiteral = createLiteralToken({
-    name: 'SingleQuotedStringLiteral',
-    pattern: /'(?:[^'\\]|\\.)*'/,
-    categories: [StringLiteral, Literal],
-});
-
-export const BackTickStringLiteral = createLiteralToken({
-    name: 'BackTickStringLiteral',
-    pattern: /`(?:[^"\\]|\\.)*`/,
-    categories: [StringLiteral, Literal],
-});
+export const DoubleQuotedStringLiteral = createStringLiteralToken('DoubleQuotedStringLiteral', '"');
+export const SingleQuotedStringLiteral = createStringLiteralToken('SingleQuotedStringLiteral', "'");
+export const BackTickStringLiteral = createStringLiteralToken('BackTickStringLiteral', '`');
 
 export const IdentifierLiteral = createLiteralToken({
     name: 'IdentifierLiteral',
     pattern: /[a-zA-Z_$][\w$]*/,
-    categories: [Identifier, Literal],
+    categories: [Identifier],
 });
 
 export const BracketedIdentifierLiteral = createLiteralToken({

@@ -10,6 +10,7 @@
     "ltrim",
     "parselie",
     "Parslie",
+    "RANDBETWEEN",
     "RTRIM",
     "SUMIF"
 ]

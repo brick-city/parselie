@@ -1,6 +1,20 @@
-import { parselieParser } from './src/parser/parse.js';
-import { ParslieVisitor } from './src/parser/visitor.js';
+import { Decimal } from 'decimal.js';
 
+// import { parselieParser } from './src/parser/parse.js';
+// import { ParslieVisitor } from './src/parser/visitor.js';
+
+console.log((new Decimal('-2.5').ceil()));
+
+console.log('New Ceiling -2.55 -.1', (new Decimal('-2.55')).div(new Decimal('-0.1')).ceil().mul(new Decimal('-0.1')));
+console.log('toNearest -2.55, -.1', (new Decimal('-2.55')).toNearest(new Decimal('-0.1')));
+console.log('New Ceiling 2.55, -.1', (new Decimal('2.55')).div(new Decimal('-0.1')).ceil().mul(new Decimal('-0.1')));
+console.log('toNearest 2.55, -.1', (new Decimal('2.55')).toNearest(new Decimal('-0.1')));
+console.log('New Ceiling 2.56, .1', (new Decimal('2.56')).div(new Decimal('0.1')).ceil().mul(new Decimal('0.1')));
+console.log('toNearest 2.56, .1', (new Decimal('2.56')).toNearest(new Decimal('0.1')));
+
+console.log((new Decimal('-2.5').floor()));
+console.log((new Decimal('2.5').ceil()));
+console.log((new Decimal('2.5').floor()));
 // eslint-disable-next-line no-template-curly-in-string
 
 // !!!!!! we are going to add
