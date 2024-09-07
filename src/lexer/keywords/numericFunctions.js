@@ -198,4 +198,57 @@ export const numericFunctionList = [
         name: ['RANDBETWEEN', 'randBetween'],
         function: functionDefinitions.randBetween,
     },
+    { // Probably don't need this
+        name: ['TO_FRACTION', 'toFraction'],
+        function: functionDefinitions.toFraction,
+    },
+    {
+        name: ['IS_BIG_INT_LITERAL', 'isBigIntLiteral'],
+        function: functionDefinitions.isBigIntLiteral,
+    },
+    {
+        name: ['IS_BINARY_LITERAL', 'isBinaryLiteral'],
+        function: functionDefinitions.isBinaryLiteral,
+    },
+    {
+        name: ['IS_FINITE', 'isFinite'],
+        function: functionDefinitions.isFinite,
+    },
+    {
+        name: ['IS_FLOAT_LITERAL', 'isFloatLiteral'],
+        function: functionDefinitions.isFloatLiteral,
+    },
+    {
+        name: ['IS_HEXADECIMAL_LITERAL', 'isHexadecimalLiteral'],
+        function: functionDefinitions.isHexadecimalLiteral,
+    },
+    {
+        name: ['IS_INTEGER', 'isInteger'],
+        function: functionDefinitions.isInteger,
+    },
+    {
+        name: ['IS_INTEGER_LITERAL', 'isIntegerLiteral'],
+        function: functionDefinitions.isIntegerLiteral,
+    },
+    {
+        name: ['IS_NAN', 'isNaN'],
+        function: functionDefinitions.isNaN,
+    },
+    {
+        name: ['IS_NEGATIVE', 'isNegative'],
+        function: functionDefinitions.isNegative,
+    },
+    {
+        name: ['IS_NUMERIC_LITERAL', 'isNumericLiteral'],
+        function: functionDefinitions.isNumericLiteral,
+    },
+    {
+        name: ['IS_OCTAL_LITERAL', 'isOctalLiteral'],
+        function: functionDefinitions.isOctalLiteral,
+    },
+    {
+        name: ['IS_POSITIVE', 'isPositive'],
+        function: functionDefinitions.isPositive,
+    },
+
 ];
