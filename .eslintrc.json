@@ -36,7 +36,10 @@
         "import/extensions": ["error", "ignorePackages"],
         "no-plusplus":["error", {"allowForLoopAfterthoughts": true}],        
         "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-        "no-unused-vars": ["error", { "varsIgnorePattern": "Types$" }]
+        "no-unused-vars": ["error", { "varsIgnorePattern": "Types$" }],       
+     //   "no-floating-promise/no-floating-promise": 2,  I don't think we are using this
+        "import/prefer-default-export": ["off"],
+        "import/no-default-export": ["error"]
     },
     "parser": "@babel/eslint-parser",
     "parserOptions": {

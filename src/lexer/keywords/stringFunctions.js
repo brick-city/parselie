@@ -1,5 +1,5 @@
 import * as Types from '../../types.d.js';
-import stringFunctionDefinitions from '../../functions/string/string.js'; // Reference the new string function definitions
+import stringFunctionDefinitions from '../../functions/string.js'; // Reference the new string function definitions
 
 /** @type {Types.KeywordObject[]} */
 // eslint-disable-next-line import/prefer-default-export

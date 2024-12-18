@@ -1,4 +1,4 @@
-import * as Types from '../../types.d.js';
+import * as Types from '../types.d.js';
 
 /** @typedef {Types.String} String */
 /** @typedef {Types.Numeric} Numeric */
