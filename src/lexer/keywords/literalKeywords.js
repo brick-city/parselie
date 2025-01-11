@@ -7,60 +7,31 @@ import * as Types from '../../types.d.js';
 // eslint-disable-next-line import/prefer-default-export
 export const literalKeywordList = [
     {
-        name: 'TRUE',
+        names: ['TRUE', 'true'],
         categories: [Enumeration],
         type: 'Enumeration',
         returns: 'Boolean',
         value: true,
     },
     {
-        name: 'true',
-        categories: [Enumeration],
-        type: 'Enumeration',
-        returns: 'Boolean',
-        value: true,
-    },
-    {
-        name: 'false',
+        names: ['FALSE', 'false'],
         categories: [Enumeration],
         type: 'Enumeration',
         returns: 'Boolean',
         value: false,
     },
     {
-        name: 'FALSE',
-        categories: [Enumeration],
-        type: 'Enumeration',
-        returns: 'Boolean',
-        value: false,
-    },
-    {
-        name: 'undefined',
+        names: ['undefined', 'UNDEFINED'],
         categories: [Enumeration],
         type: 'Enumeration',
         returns: 'Undefined',
         value: undefined,
     },
     {
-        name: 'UNDEFINED',
-        categories: [Enumeration],
-        type: 'Enumeration',
-        returns: 'Undefined',
-        value: undefined,
-    },
-    {
-        name: 'null',
+        names: ['null', 'NULL'],
         categories: [Enumeration],
         type: 'Enumeration',
         returns: 'Null',
         value: null,
     },
-    {
-        name: 'NULL',
-        categories: [Enumeration],
-        type: 'Enumeration',
-        returns: 'Null',
-        value: null,
-    },
-
 ];

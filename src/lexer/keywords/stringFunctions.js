@@ -5,71 +5,88 @@ import stringFunctionDefinitions from '../../functions/string.js'; // Reference 
 // eslint-disable-next-line import/prefer-default-export
 export const stringFunctionList = [
     {
-        name: ['CONCATENATE', 'concatenate'],
+        names: ['CONCATENATE', 'concatenate'],
         function: stringFunctionDefinitions.concatenate,
+        type: 'Function',
     },
     {
-        name: ['LEFT', 'left'],
+        names: ['LEFT', 'left'],
         function: stringFunctionDefinitions.left,
+        type: 'Function',
     },
     {
-        name: ['RIGHT', 'right'],
+        names: ['RIGHT', 'right'],
         function: stringFunctionDefinitions.right,
+        type: 'Function',
     },
     {
-        name: ['MID', 'mid'],
+        names: ['MID', 'mid'],
         function: stringFunctionDefinitions.mid,
+        type: 'Function',
     },
     {
-        name: ['LOWER', 'lower'],
+        names: ['LOWER', 'lower'],
         function: stringFunctionDefinitions.lower,
+        type: 'Function',
     },
     {
-        name: ['UPPER', 'upper'],
+        names: ['UPPER', 'upper'],
         function: stringFunctionDefinitions.upper,
+        type: 'Function',
     },
     {
-        name: ['TRIM', 'trim'],
+        names: ['TRIM', 'trim'],
         function: stringFunctionDefinitions.trim,
+        type: 'Function',
     },
     {
-        name: ['RTRIM', 'rtrim'],
+        names: ['RTRIM', 'rtrim'],
         function: stringFunctionDefinitions.rtrim,
+        type: 'Function',
     },
     {
-        name: ['LTRIM', 'ltrim'],
+        names: ['LTRIM', 'ltrim'],
         function: stringFunctionDefinitions.ltrim,
+        type: 'Function',
     },
     {
-        name: ['REPLACE', 'replace'],
+        names: ['REPLACE', 'replace'],
         function: stringFunctionDefinitions.replace,
+        type: 'Function',
     },
     {
-        name: ['REPLICATE', 'replicate'],
+        names: ['REPLICATE', 'replicate'],
         function: stringFunctionDefinitions.replicate,
+        type: 'Function',
     },
     {
-        name: ['SUBSTRING', 'substring'],
+        names: ['SUBSTRING', 'substring'],
         function: stringFunctionDefinitions.substring,
+        type: 'Function',
     },
     {
-        name: ['REVERSE', 'reverse'],
+        names: ['REVERSE', 'reverse'],
         function: stringFunctionDefinitions.reverse,
+        type: 'Function',
     },
     {
-        name: ['SUBSTITUTE', 'substitute'],
+        names: ['SUBSTITUTE', 'substitute'],
         function: stringFunctionDefinitions.substitute,
+        type: 'Function',
     },
     {
-        name: ['CHARINDEX', 'charIndex'],
+        names: ['CHARINDEX', 'charIndex'],
         function: stringFunctionDefinitions.charIndex,
+        type: 'Function',
     },
     {
-        name: ['FIND', 'find'],
+        names: ['FIND', 'find'],
         function: stringFunctionDefinitions.find,
+        type: 'Function',
     },
     {
-        name: ['LEN', 'len'],
+        names: ['LEN', 'len'],
         function: stringFunctionDefinitions.len,
+        type: 'Function',
     },
 ];

@@ -15,10 +15,10 @@
 
 /**
  * @typedef {Object} KeywordObject
- * @property {String[]} name - The name(s) of the keyword.
+ * @property {String[]} names - The name(s) of the keyword.
  * @property {Array<chevrotain.TokenType>} [categories] - An array representing categories.
  * @property {FunctionDefinitionTypes | FunctionDefinitionTypes[]} [function] - The function that the keyword represents.
- * @property {"Enumeration"|"Function"} [type] - The type of the token.
+ * @property {"Enumeration"|"Function"} type - The type of the token.
  * @property {*} [value] - The value of the token.
  * @property {TypeString} [returns] - The return type of the function.
  */

@@ -1,42 +1,51 @@
 import * as Types from '../../types.d.js';
-import {logicalFunctionDefinitions} from '../../functions/logical.js'; // Reference the new logical function definitions
+import { logicalFunctionDefinitions } from '../../functions/logical.js'; // Reference the new logical function definitions
 
 /** @type {Types.KeywordObject[]} */
 export const logicalFunctionList = [
     {
-        name: ['IF', 'iif'],
+        names: ['IF', 'iif'],
         function: logicalFunctionDefinitions.iif,
+        type: 'Function',
     },
     {
-        name: ['AND', 'and'],
+        names: ['AND', 'and'],
         function: logicalFunctionDefinitions.and,
+        type: 'Function',
     },
     {
-        name: ['OR', 'or'],
+        names: ['OR', 'or'],
         function: logicalFunctionDefinitions.or,
+        type: 'Function',
     },
     {
-        name: ['XOR', 'xor'],
+        names: ['XOR', 'xor'],
         function: logicalFunctionDefinitions.xor,
+        type: 'Function',
     },
     {
-        name: ['NOT', 'not'],
+        names: ['NOT', 'not'],
         function: logicalFunctionDefinitions.not,
+        type: 'Function',
     },
     {
-        name: ['ISNULL', 'isNull'],
+        names: ['ISNULL', 'isNull'],
         function: logicalFunctionDefinitions.isNull,
+        type: 'Function',
     },
     {
-        name: ['ISUNDEFINED', 'isUndefined'],
+        names: ['ISUNDEFINED', 'isUndefined'],
         function: logicalFunctionDefinitions.isUndefined,
+        type: 'Function',
     },
     {
-        name: ['ISERROR', 'isError'],
+        names: ['ISERROR', 'isError'],
         function: logicalFunctionDefinitions.isError,
+        type: 'Function',
     },
     {
-        name: ['ISBOOLEAN', 'isBoolean'],
+        names: ['ISBOOLEAN', 'isBoolean'],
         function: logicalFunctionDefinitions.isBoolean,
+        type: 'Function',
     },
 ];
