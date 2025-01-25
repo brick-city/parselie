@@ -3,7 +3,7 @@ import * as Types from '../types.d.js';
 /**
  * @template T
  * @param {Types.ArgumentSignature} args - The types of arguments the function accepts.
- * @param {Types.TypeString} returns - The return type of the function.
+ * @param {Types.TypeString | "AnyT"} returns - The return type of the function.
  * @param {function(Types.FunctionCtx, ...function(): (Boolean | Any)): T} func - The implementation of the function.
  * @returns {Types.FunctionDefinition<T>} - The function definition object.
  */
@@ -16,8 +16,8 @@ const createFunctionDefinition = (args, returns, func) => ({
 export const logicalFunctionDefinitions = {
     /** @type {Types.FunctionDefinition<Boolean>} */
     iif: createFunctionDefinition(
-        ['Boolean', 'Any', 'Any'],
-        'Any',
+        ['Boolean', 'AnyT', 'AnyT'],
+        'AnyT',
         (ctx, condition, trueValue, falseValue) => (condition() ? trueValue() : falseValue()),
     ),
 

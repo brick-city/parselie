@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/prefer-default-export */
 
 /**
@@ -10,8 +11,19 @@
  * @typedef {("Numeric"|"String"|"Boolean"|"Date")[]
         | ["NumericVar"|"StringVar"|"BooleanVar"|"DateVar"]
         | [...("Numeric"|"String"|"Boolean"|"Date")[],
-        "NumericVar"|"StringVar"|"BooleanVar"|"DateVar"]} ArgumentSignature
+        "NumericVar"|"StringVar"|"BooleanVar"|"DateVar"]} ArgumentSignaturex
  */
+
+/**
+ * @typedef {[...("Numeric"|"String"|"Boolean"|"Date"|"Any"|"AnyT")[],
+ * ("Numeric"|"String"|"Boolean"|"Date"|"Any"|"AnyT"|"NumericVar"|"StringVar"|"BooleanVar"|"DateVar"|"AnyVar"|"AnyTVar") ]} ArgumentSignature
+ */
+
+// TODO: Create a typedef for properties
+
+/**
+ * @typedef {Object} ctx
+ * @property {Map< String, Object >} ctx.properties
 
 /**
  * @typedef {Object} KeywordObject
@@ -24,11 +36,16 @@
  */
 
 /**
- * @template {Decimal|String|Date|Boolean|Decimal[]} ReturnType
+ * @typedef {Decimal|String|Date|Boolean|Decimal[]} FunctionReturnType
+ * @typedef {"const"|"func"|"prop"}  FunctionCategory
+*/
+
+/**
+ * @template {FunctionReturnType} ReturnType
  * @typedef {Object} FunctionDefinition
  * @property {TypeString} returns - The return type of the function.
  * @property {ArgumentSignature} arguments - The arguments of the function
- * @property {function(FunctionCtx, ...function(): (Decimal|String|Date|Boolean|Decimal[])): ReturnType} func - The function to be executed.
+ * @property {function(FunctionCtx, ...function(): (FunctionReturnType)): ReturnType} func - The function to be executed.
  */
 
 /**

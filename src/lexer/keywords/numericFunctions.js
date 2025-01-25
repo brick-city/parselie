@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 import * as Types from '../../types.d.js';
-import functionDefinitions from '../../functions/numeric.js'; // Import the function definitions
+import functionDefinitions from '../../ops/numeric.js'; // Import the function definitions
 
 /** @type {Types.KeywordObject[]} */
 

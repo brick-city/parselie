@@ -1,5 +1,5 @@
 import * as Types from '../../types.d.js';
-import { logicalFunctionDefinitions } from '../../functions/logical.js'; // Reference the new logical function definitions
+import { logicalFunctionDefinitions } from '../../ops/logical.js'; // Reference the new logical function definitions
 
 /** @type {Types.KeywordObject[]} */
 export const logicalFunctionList = [
