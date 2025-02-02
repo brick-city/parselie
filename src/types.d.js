@@ -5,13 +5,20 @@
  * @typedef {Object.<string, any>} GenericObject
  * @typedef {import('decimal.js').Decimal.Instance} Decimal
  * @typedef {import('decimal.js').Decimal.Constructor} DecimalClass
+ * @typedef {import ('temporal-polyfill').Temporal.PlainDate} Date
+ * @typedef {import ('temporal-polyfill').Temporal.PlainDateTime} DateTime
+ * @typedef {import ('temporal-polyfill').Temporal.PlainTime} Time
+ * @typedef {import ('temporal-polyfill').Temporal.PlainYearMonth} YearMonth
+ * @typedef {import ('temporal-polyfill').Temporal.PlainMonthDay} MonthDay
+ * @typedef {import ('temporal-polyfill').Temporal.Duration} Duration
+ * @typedef {import ('temporal-polyfill').Temporal.Instant} Instant
+ * @typedef {import ('temporal-polyfill').Temporal.TimeZone} TimeZone
+ * @typedef {import ('temporal-polyfill').Temporal.ZonedDateTime} ZonedDateTime
  */
 
 /**
- * @typedef {("Numeric"|"String"|"Boolean"|"Date")[]
-        | ["NumericVar"|"StringVar"|"BooleanVar"|"DateVar"]
-        | [...("Numeric"|"String"|"Boolean"|"Date")[],
-        "NumericVar"|"StringVar"|"BooleanVar"|"DateVar"]} ArgumentSignaturex
+ * @typedef { Date | DateTime | Time | YearMonth | MonthDay | Duration | Instant | TimeZone | ZonedDateTime } DateScalarType
+ * @typedef { Decimal | String | Boolean | DateScalarType } ScalarType
  */
 
 /**
@@ -22,8 +29,18 @@
 // TODO: Create a typedef for properties
 
 /**
- * @typedef {Object} ctx
- * @property {Map< String, Object >} ctx.properties
+ * @typedef {Object} CtxType - The context object.
+ * @property {Map< String, ScalarType >} properties - The properties of the context.
+ * @property {Map< String, ScalarType >} constants - The constants of the context.
+ * /
+
+/** @typedef {function():ScalarType} OpFunctionType */
+
+/**
+ * @typedef {Object} OperandType - An operand object.
+ * @property {OpFunctionType} $ - The operand function
+ * @property {TypeString} type - The return type of the operand.
+ */
 
 /**
  * @typedef {Object} KeywordObject
