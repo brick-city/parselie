@@ -107,3 +107,15 @@ export const BracketedIdentifierLiteral = createLiteralToken({
     pattern: /<![^\s<][^\t\n\r\f\v<]*[^\s<!]!>/,
     categories: [Identifier, BracketedIdentifier],
 });
+
+export const DateLiteral = createLiteralToken({
+    name: 'Date',
+    pattern: /#\d{4}-\d{2}-\d{2}#/,
+    categories: [Literal],
+});
+
+export const PlainDateTimeLiteral = createLiteralToken({
+    name: 'PlainDateTime',
+    pattern: /#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}#/,
+    categories: [Literal],
+});

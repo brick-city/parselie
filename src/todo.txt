@@ -1,2 +1,4 @@
 // TODO: Restructuring keyword definitions
     All files under /lexer/keyword are to be structures in the manner of /types.d.js/keywordDefinition
+
+// TODO: Create the literals for Date/DateTime/Etc...    
