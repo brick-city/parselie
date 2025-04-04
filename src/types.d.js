@@ -22,8 +22,7 @@
  */
 
 /**
- * @typedef {[...("Numeric"|"String"|"Boolean"|"Date"|"Any"|"AnyT")[],
- * ("Numeric"|"String"|"Boolean"|"Date"|"Any"|"AnyT"|"NumericVar"|"StringVar"|"BooleanVar"|"DateVar"|"AnyVar"|"AnyTVar") ]} ArgumentSignature
+ * @typedef {[...(TypeString)[], (TypeString|TypeVaryingString) ]} ArgumentSignature
  */
 
 // TODO: Create a typedef for properties
@@ -89,6 +88,20 @@
  * @property {Decimal} NaN - The Decimal instance representing NaN.
  */
 
-/** @typedef {"Numeric"|"String"|"Boolean"|"Date"|"Undefined"|"Null"|"Array"} TypeString */
+/**
+ * @typedef {"Decimal"|"Float"|"Integer"} NumericTypeString
+ * @typedef {"PlainDate"|"PlainDateTime"|"Instant"|"ZonedDateTime"|"PlainTime"|"PlainMonthDay"|"PlainYearMonth" | "Duration"} TemporalTypeString
+ * @typedef {"Array"|"Object"|"Any"|"AnyT"} ComplexTypeString
+ * @typedef {"String"|"Boolean"|"Undefined"|"Null"} OtherTypeString
+ * @typedef {NumericTypeString|TemporalTypeString|ComplexTypeString|OtherTypeString} TypeString
+ */
+
+/**
+ * @typedef {"DecimalVar"|"FloatVar"|"IntegerVar"} NumericTypeVaryingString
+ * @typedef {"PlainDateVar"|"PlainDateTimeVar"|"InstantVar"|"ZonedDateTimeVar"|"PlainTimeVar"|"PlainMonthDayVar"|"PlainYearMonthVar" | "DurationVar"} TemporalTypeVaryingString
+ * @typedef {"ArrayVar"|"ObjectVar"|"AnyVar"|"AnyTVar"} ComplexTypeVaryingString
+ * @typedef {"StringVar"|"BooleanVar"|"UndefinedVar"|"NullVar"} OtherTypeVaryingString
+ * @typedef {NumericTypeVaryingString|TemporalTypeVaryingString|ComplexTypeVaryingString|OtherTypeVaryingString} TypeVaryingString
+ */
 
 export const Types = {};
