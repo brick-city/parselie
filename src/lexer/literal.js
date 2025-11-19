@@ -1,6 +1,6 @@
 import { createToken } from 'chevrotain';
 import {
-    NumericLiteral, StringLiteral, Identifier, BracketedIdentifier, Literal,
+    NumericLiteral, StringLiteral, Identifier, BracketedIdentifier, Literal, DateLiteral,
 } from './token-categories.js';
 
 /** @type {chevrotain.TokenType[]} */
@@ -40,53 +40,117 @@ function createStringLiteralToken(name, quoteChar) {
 
 }
 
+// ============================================================================
+// EXPORTED REGEX PATTERNS
+// These patterns can be used for validation, testing, and token creation
+// ============================================================================
+
+// GUID/UUID Patterns
+export const UuidLiteralPattern = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/;
+export const GuidLiteralPattern = /\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}/;
+
+// Numeric Patterns
+export const FloatLiteralPattern = /[+-]?(?:\d+(_?\d+)*|\d*(_?\d+)?\.\d+(_?\d+)*|\d+(_?\d+)*\.\d*)([eE][+-]?\d+(_?\d+)*)?/;
+export const BinaryLiteralPattern = /0[bB][01](_?[01])*(\.[01](_?[01])*)?([pP][+-]?\d+)?/;
+export const OctalLiteralPattern = /0[oO][0-7](_?[0-7])*(\.[0-7](_?[0-7])*)?([pP][+-]?\d+)?/;
+export const HexadecimalLiteralPattern = /0[xX][0-9a-fA-F](_?[0-9a-fA-F])*(\.[0-9a-fA-F](_?[0-9a-fA-F])*)?([pP][+-]?\d+)?/;
+export const BigIntegerLiteralPattern = /(?:0|[1-9]\d*(_?\d)*)[LlNn]/;
+export const IntegerLiteralPattern = /(?:0|[1-9]\d*(_?\d)*)/;
+
+// Identifier Patterns
+export const IdentifierLiteralPattern = /[a-zA-Z_$][\w$]*/;
+export const BracketedIdentifierLiteralPattern = /<![^\s<][^\t\n\r\f\v<]*[^\s<!]!>/;
+
+// Temporal Patterns
+// ZonedDateTime: full date-time with timezone
+// Format: #YYYY-MM-DDTHH:MM:SS(.fraction)?(Z|±HH:MM)[TimeZone]#
+// Example: #2024-01-01T12:34:56.789-05:00[America/New_York]#
+// eslint-disable-next-line max-len
+export const ZonedDateTimeLiteralPattern = /#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})\[[A-Za-z0-9._+-]+(?:\/[A-Za-z0-9._+-]+)*\]#/;
+
+// PlainDateTime: date-time without timezone
+// Format: #YYYY-MM-DDTHH:MM[:SS[.fraction]]#
+// Example: #2024-01-01T12:34:56.789#
+export const PlainDateTimeLiteralPattern = /#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?#/;
+
+// PlainDate: calendar date only
+// Format: #YYYY-MM-DD#
+// Example: #2024-01-31#
+export const PlainDateLiteralPattern = /#\d{4}-\d{2}-\d{2}#/;
+
+// PlainTime: time of day without date
+// Format: #HH:MM[:SS[.fraction]]#
+// Example: #12:34:56.789#
+export const PlainTimeLiteralPattern = /#\d{2}:\d{2}(?::\d{2}(?:\.\d{1,9})?)?#/;
+
+// PlainMonthDay: month and day (for recurring dates)
+// Format: #--MM-DD#
+// Example: #--12-25#
+export const PlainMonthDayLiteralPattern = /#--\d{2}-\d{2}#/;
+
+// PlainYearMonth: year and month only
+// Format: #YYYY-MM#
+// Example: #2024-01#
+export const PlainYearMonthLiteralPattern = /#\d{4}-\d{2}#/;
+
+// Duration: ISO 8601 duration
+// Format: #P(duration)#
+// Example: #P1Y2M3DT4H5M6.789S#
+// Note: Requires at least one component (using positive lookahead)
+export const DurationLiteralPattern = /#P(?=.*\d)(?:\d+Y)?(?:\d+M)?(?:\d+W)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?#/;
+
+// ============================================================================
+// TOKEN DEFINITIONS
+// Order matters! More specific patterns must come first.
+// ============================================================================
+
 // This needs to be early so the hex doesn't match the guid
 export const UuidLiteral = createLiteralToken({
     name: 'GuidLiteral',
-    pattern: /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/,
+    pattern: UuidLiteralPattern,
     categories: [Literal],
 });
 
 export const GuidLiteral = createLiteralToken({
     name: 'GuidLiteral',
-    pattern: /\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}/,
+    pattern: GuidLiteralPattern,
     categories: [Literal],
 });
 
 // This needs to be early so the integer doesn't match the float
 export const FloatLiteral = createLiteralToken({
     name: 'FloatLiteral',
-    pattern: /[+-]?(?:\d+(_?\d+)*|\d*(_?\d+)?\.\d+(_?\d+)*|\d+(_?\d+)*\.\d*)([eE][+-]?\d+(_?\d+)*)?/,
+    pattern: FloatLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
 export const BinaryLiteral = createLiteralToken({
     name: 'BinaryLiteral',
-    pattern: /0[bB][01](_?[01])*(\.[01](_?[01])*)?([pP][+-]?\d+)?/,
+    pattern: BinaryLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
 export const OctalLiteral = createLiteralToken({
     name: 'OctalLiteral',
-    pattern: /0[oO][0-7](_?[0-7])*(\.[0-7](_?[0-7])*)?([pP][+-]?\d+)?/,
+    pattern: OctalLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
 export const HexadecimalLiteral = createLiteralToken({
     name: 'HexadecimalLiteral',
-    pattern: /0[xX][0-9a-fA-F](_?[0-9a-fA-F])*(\.[0-9a-fA-F](_?[0-9a-fA-F])*)?([pP][+-]?\d+)?/,
+    pattern: HexadecimalLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
 export const BigIntegerLiteral = createLiteralToken({
     name: 'BigIntegerLiteral',
-    pattern: /(?:0|[1-9]\d*(_?\d)*)[LlNn]/,
+    pattern: BigIntegerLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
 export const IntegerLiteral = createLiteralToken({
     name: 'IntegerLiteral',
-    pattern: /(?:0|[1-9]\d*(_?\d)*)/,
+    pattern: IntegerLiteralPattern,
     categories: [NumericLiteral, Literal],
 });
 
@@ -96,7 +160,7 @@ export const BackTickStringLiteral = createStringLiteralToken('BackTickStringLit
 
 export const IdentifierLiteral = createLiteralToken({
     name: 'IdentifierLiteral',
-    pattern: /[a-zA-Z_$][\w$]*/,
+    pattern: IdentifierLiteralPattern,
     categories: [Identifier],
 });
 
@@ -104,18 +168,58 @@ export const BracketedIdentifierLiteral = createLiteralToken({
     // This looks for <! test !> type strings, allowing spaces but not control characters
     // also, not allowing the inner string to start or end with a space.
     name: 'BracketedIdentifierLiteral',
-    pattern: /<![^\s<][^\t\n\r\f\v<]*[^\s<!]!>/,
+    pattern: BracketedIdentifierLiteralPattern,
     categories: [Identifier, BracketedIdentifier],
 });
 
-export const DateLiteral = createLiteralToken({
-    name: 'Date',
-    pattern: /#\d{4}-\d{2}-\d{2}#/,
-    categories: [Literal],
+// Temporal Literal Types
+// Order matters! More specific patterns must come first.
+
+// ZonedDateTime: full date-time with timezone
+export const ZonedDateTimeLiteral = createLiteralToken({
+    name: 'ZonedDateTimeLiteral',
+    pattern: ZonedDateTimeLiteralPattern,
+    categories: [DateLiteral, Literal],
 });
 
+// PlainDateTime: date-time without timezone
 export const PlainDateTimeLiteral = createLiteralToken({
-    name: 'PlainDateTime',
-    pattern: /#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}#/,
-    categories: [Literal],
+    name: 'PlainDateTimeLiteral',
+    pattern: PlainDateTimeLiteralPattern,
+    categories: [DateLiteral, Literal],
+});
+
+// PlainDate: calendar date only
+export const PlainDateLiteral = createLiteralToken({
+    name: 'PlainDateLiteral',
+    pattern: PlainDateLiteralPattern,
+    categories: [DateLiteral, Literal],
+});
+
+// PlainTime: time of day without date
+export const PlainTimeLiteral = createLiteralToken({
+    name: 'PlainTimeLiteral',
+    pattern: PlainTimeLiteralPattern,
+    categories: [DateLiteral, Literal],
+});
+
+// PlainMonthDay: month and day (for recurring dates)
+export const PlainMonthDayLiteral = createLiteralToken({
+    name: 'PlainMonthDayLiteral',
+    pattern: PlainMonthDayLiteralPattern,
+    categories: [DateLiteral, Literal],
+});
+
+// PlainYearMonth: year and month only
+export const PlainYearMonthLiteral = createLiteralToken({
+    name: 'PlainYearMonthLiteral',
+    pattern: PlainYearMonthLiteralPattern,
+    categories: [DateLiteral, Literal],
+});
+
+// Duration: ISO 8601 duration
+export const DurationLiteral = createLiteralToken({
+    name: 'DurationLiteral',
+    pattern: DurationLiteralPattern,
+    categories: [DateLiteral, Literal],
 });
