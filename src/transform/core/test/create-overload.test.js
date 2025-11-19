@@ -8,9 +8,9 @@ describe('createOverload()', () => {
     it('accepts valid overloads where fn.length matches required args', () => {
 
         // @ts-ignore
-        const overload = createOverload('number, number => number', (a, b) => a + b);
+        const overload = createOverload('a:number, b:number => number', (a, b) => a + b);
         assert.strictEqual(typeof overload.fn, 'function');
-        assert.strictEqual(overload.signature, 'number, number => number');
+        assert.strictEqual(overload.signature, 'a:number, b:number => number');
 
     });
 
@@ -18,7 +18,7 @@ describe('createOverload()', () => {
 
         assert.throws(
             // @ts-ignore
-            () => createOverload('number, number, number => number', (a, b) => a + b),
+            () => createOverload('a:number, b:number, c:number => number', (a, b) => a + b),
             /requires at least 3 args/,
         );
 

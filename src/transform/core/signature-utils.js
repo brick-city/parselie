@@ -4,7 +4,7 @@
  * Utilities for parsing and validating compact function signature DSL strings.
  * DSL syntax supports types, optional args, variadic args, and return types.
  *
- * Example: "number, string?, boolean... => any"
+ * Example: "name:string, count?:number => boolean"
  */
 
 import { allowedTypes } from './function-types.js';
@@ -12,19 +12,34 @@ import { allowedTypes } from './function-types.js';
 /** @typedef {import('./function-types.js').AllowedType} AllowedType */
 
 /**
- * Parses a function signature string like "number, string? => boolean"
- * and returns structured argument and return type info.
+ * Parses a function signature string with named parameters.
+ *
+ * Format: paramName[?]:type[...], paramName2[?]:type[...] => returnType
+ * Examples:
+ *   - name:string => string
+ *   - count?:number => boolean
+ *   - items:string... => number
  *
  * Rules:
  * - Signature must contain exactly one '=>' separator.
- * - Arguments must be comma-separated.
- * - Optional arguments must be last.
- * - Variadic arguments must be last.
+ * - Arguments must be comma-separated and follow format: paramName[?]:type[...]
+ * - Parameter names must be valid JavaScript identifiers.
+ * - Optional parameters must be last (marked with ? after name).
+ * - Variadic parameters must be last (marked with ... after type).
+ * - Variadic arguments are inherently optional (zero or more allowed).
  * - Types must be known and valid.
  *
  * @param {string} signature - The signature DSL string.
- * @returns {{ args: Array<{ type: AllowedType, optional: boolean, variadic: boolean }>, returns: AllowedType }}
- * @throws {Error} If the signature is malformed or contains invalid types.
+ * @returns {{
+ *   args: Array<{
+ *     name: string,
+ *     type: AllowedType,
+ *     optional: boolean,
+ *     variadic: boolean
+ *   }>,
+ *   returns: AllowedType
+ * }}
+ * @throws {Error} If the signature is malformed or contains invalid types/names.
  */
 export function parseSignature(signature) {
 
@@ -68,48 +83,83 @@ export function parseSignature(signature) {
 
         for (let i = 0; i < argStrings.length; i++) {
 
-            let raw = argStrings[i];
+            const argSpec = argStrings[i];
 
-            if (!raw) {
+            if (!argSpec) {
 
                 throw new Error(`Empty argument at position ${i + 1} in signature: "${signature}"`);
 
             }
 
-            let optional = false;
-            let variadic = false;
+            // Parse format: paramName[?]:type[...]
+            const colonIndex = argSpec.indexOf(':');
+            if (colonIndex === -1) {
 
-            if (raw.endsWith('?')) {
+                throw new Error(`Missing ':' separator in parameter at position ${i + 1} in signature: "${signature}"`);
+
+            }
+
+            const nameSpec = argSpec.substring(0, colonIndex).trim();
+            const typeSpec = argSpec.substring(colonIndex + 1).trim();
+
+            if (!nameSpec) {
+
+                throw new Error(`Missing parameter name at position ${i + 1} in signature: "${signature}"`);
+
+            }
+
+            if (!typeSpec) {
+
+                throw new Error(`Missing parameter type at position ${i + 1} in signature: "${signature}"`);
+
+            }
+
+            // Parse optional flag from name: paramName[?]
+            let optional = false;
+            let name = nameSpec;
+            if (nameSpec.endsWith('?')) {
 
                 optional = true;
-                raw = raw.slice(0, -1);
+                name = nameSpec.slice(0, -1).trim();
 
             }
 
-            if (raw.endsWith('...')) {
+            // Validate name is a valid identifier
+            if (!/^[a-zA-Z_$][\w$]*$/.test(name)) {
+
+                // eslint-disable-next-line max-len
+                throw new Error(`Invalid parameter name "${name}" at position ${i + 1}. `
+                    + `Must be a valid JavaScript identifier in signature: "${signature}"`);
+
+            }
+
+            // Parse variadic flag from type: type[...]
+            let variadic = false;
+            let typeRaw = typeSpec;
+            if (typeRaw.endsWith('...')) {
 
                 variadic = true;
-                raw = raw.slice(0, -3);
+                typeRaw = typeRaw.slice(0, -3).trim();
 
             }
 
-            const type = /** @type {AllowedType} */ (raw);
+            const type = /** @type {AllowedType} */ (typeRaw);
 
             if (!allowedTypes.has(type)) {
 
-                throw new Error(`Unknown type "${type}" in signature: "${signature}"`);
+                throw new Error(`Unknown type "${type}" for parameter "${name}" in signature: "${signature}"`);
 
             }
 
             if (optional && i !== argStrings.length - 1) {
 
-                throw new Error(`Optional parameter "${type}?" must be last in signature: "${signature}"`);
+                throw new Error(`Optional parameter "${name}?" must be last in signature: "${signature}"`);
 
             }
 
             if (variadic && i !== argStrings.length - 1) {
 
-                throw new Error(`Variadic parameter "${type}..." must be last in signature: "${signature}"`);
+                throw new Error(`Variadic parameter "${name}:${type}..." must be last in signature: "${signature}"`);
 
             }
 
@@ -121,11 +171,12 @@ export function parseSignature(signature) {
 
             if (!optional && foundOptional) {
 
-                throw new Error(`Non-optional parameter cannot follow optional one in signature: "${signature}"`);
+                throw new Error(`Non-optional parameter "${name}" cannot follow optional one in signature: "${signature}"`);
 
             }
 
             args.push({
+                name,
                 type,
                 optional,
                 variadic,

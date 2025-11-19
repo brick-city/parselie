@@ -15,7 +15,7 @@ describe('buildFunctionMap()', () => {
                 names: ['add', 'ADD'],
                 overloads: [
                     // @ts-ignore
-                    createOverload('number, number => number', (a, b) => a + b),
+                    createOverload('a:number, b:number => number', (a, b) => a + b),
                 ],
             },
         ];
@@ -32,14 +32,14 @@ describe('buildFunctionMap()', () => {
                 names: ['add'],
                 overloads: [
                     // @ts-ignore
-                    createOverload('number, number => number', (a, b) => a + b),
+                    createOverload('a:number, b:number => number', (a, b) => a + b),
                 ],
             },
             {
                 names: ['ADD'],
                 overloads: [
                     // @ts-ignore
-                    createOverload('number, number => number', (a, b) => a - b),
+                    createOverload('a:number, b:number => number', (a, b) => a - b),
                 ],
             },
         ];
@@ -56,7 +56,10 @@ describe('buildFunctionMap()', () => {
                 allowedTypes: ['boolean', 'anyT'],
                 overloads: [
                     // @ts-ignore
-                    createOverload('boolean, anyT, anyT => anyT', (cond, thenVal, elseVal) => (cond ? thenVal : elseVal)),
+                    createOverload(
+                        'condition:boolean, thenVal:anyT, elseVal:anyT => anyT',
+                        (cond, thenVal, elseVal) => (cond ? thenVal : elseVal),
+                    ),
                 ],
             },
         ];
